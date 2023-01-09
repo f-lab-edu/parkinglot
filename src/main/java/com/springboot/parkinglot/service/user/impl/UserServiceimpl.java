@@ -6,6 +6,7 @@ import com.springboot.parkinglot.controller.user.UserResponseDto;
 import com.springboot.parkinglot.repository.user.*;
 import com.springboot.parkinglot.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +31,19 @@ public class UserServiceimpl implements UserService {
         userResponseDto.setId(savedUser.getId());
         userResponseDto.setPassword(savedUser.getPassword());
         userResponseDto.setName(savedUser.getName());
+
+        return userResponseDto;
+    }
+
+    @Override
+    public UserResponseDto getUser(Long number) {
+        User user = userDao.selectUser(number);
+
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setNumber(user.getNumber());
+        userResponseDto.setId(user.getId());
+        userResponseDto.setPassword(user.getPassword());
+        userResponseDto.setName(user.getName());
 
         return userResponseDto;
     }

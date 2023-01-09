@@ -21,4 +21,10 @@ public class UserDaoImpl implements UserDao {
         User savedUser = userRepository.save(user);
         return savedUser;
     }
+
+    @Override
+    public User selectUser(Long number) {
+        User selectedUser = userRepository.getById(number);
+        return selectedUser;
+    }
 }

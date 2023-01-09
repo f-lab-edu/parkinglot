@@ -10,8 +10,6 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(nullable = false)
     private Long number;
 
     @Column(nullable = false)
