@@ -31,4 +31,21 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
     }
+
+    @PutMapping()
+    public ResponseEntity<UserResponseDto> changeUser
+            (@RequestBody ChangeUserNameDto changeUserNameDto) throws Exception {
+        UserResponseDto userResponseDto = userService.chageUserName(
+                changeUserNameDto.getNumber(), changeUserNameDto.getId(),
+                changeUserNameDto.getPassword()
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
+    }
+
+    @DeleteMapping()
+    public  ResponseEntity<String> deleteUser(Long number) throws Exception{
+        userService.deleteUser(number);
+
+        return  ResponseEntity.status(HttpStatus.OK).body("삭제 완료");
+    }
 }

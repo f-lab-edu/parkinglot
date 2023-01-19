@@ -10,4 +10,8 @@ public interface UserService {
     UserResponseDto saveUser(UserDto userDto);
 
     UserResponseDto getUser(Long number);
+
+    UserResponseDto chageUserName(Long number, String id, String password) throws Exception;
+
+    void deleteUser(Long number) throws Exception;
 }

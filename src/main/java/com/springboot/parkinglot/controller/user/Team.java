@@ -1,4 +1,4 @@
-package com.springboot.parkinglot.controller.team;
+package com.springboot.parkinglot.controller.user;
 
 
 import com.springboot.parkinglot.controller.user.User;
@@ -21,6 +21,6 @@ public class Team {
 
     private String name;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", fetch=FetchType.EAGER)    //FetchType.EAGER 의미?
     private List<User> users = new ArrayList<User>();
 }
