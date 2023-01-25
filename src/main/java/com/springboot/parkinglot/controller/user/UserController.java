@@ -29,15 +29,16 @@ public class UserController implements CheckValidity {
     }
 
     @PostMapping()
-    public ResponseEntity<UserResponseDto> createUserRequest(@RequestBody UserDto userDto){
+    public ResponseEntity<UserResponseDto> createUserRequest(@RequestBody UserDto userDto)
+    throws CustomException{
 
         //checkValidity
-        checkString(userDto.getId());
-        checkString(userDto.getPassword());
-        checkString(userDto.getName());
+//        checkString(userDto.getId());
+//        checkString(userDto.getPassword());
+//        checkString(userDto.getName());
 
         //new checkValidity methode
-        check(userDto.getName());
+        check(userDto.getId(),userDto.getPassword(),userDto.getName());   //if name is shorter than 6, CustomException arises
 
         UserResponseDto userResponseDto = userService.saveUser(userDto);
 
@@ -104,28 +105,17 @@ public class UserController implements CheckValidity {
     }
 
     @Override   //how to make diverse input and same name?
-    public void check(String name) {
-        if(name.length() <10){
+    public void check(String id, String password, String name) throws CustomException{
+        if(id.length() <6){
             throw new CustomException();
         }
-    }
 
-    @Component  //location is correct?
-    class ExceptionHandlers{
-        @ExceptionHandler(CustomException.class)
-        public ErrorMessage exception(CustomException e){
-            e.printStackTrace();
-
-            ErrorMessage message = new ErrorMessage();
-            message.setMessage("too short name");
-            message.setCode(999);
-            return message;
+        if(password.length() <6){
+            throw new CustomException();
         }
-    }
 
-    @Data
-    class ErrorMessage{
-        private String message;
-        private int code;
+        if(name.length() <6){
+            throw new CustomException();
+        }
     }
 }
