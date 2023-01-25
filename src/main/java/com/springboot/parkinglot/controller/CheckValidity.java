@@ -7,4 +7,6 @@ public interface CheckValidity {
     void checkString(String value);
 
     void checkLong(Long value);
+
+    void check(String name);
 }

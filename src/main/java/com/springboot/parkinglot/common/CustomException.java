@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CustomException extends Exception{
 
-    CustomException(String messsage){
-        super(messsage);
+    CustomException(String message){
+        super(message);
     }
 }
