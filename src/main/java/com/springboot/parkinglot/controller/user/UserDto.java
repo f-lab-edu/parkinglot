@@ -1,14 +1,14 @@
 package com.springboot.parkinglot.controller.user;
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Column;
 
 @NoArgsConstructor
 //@AllArgsConstructor
 @Data
 public class UserDto {
+
+    private Long number;
 
     private String id;
 
@@ -16,7 +16,8 @@ public class UserDto {
 
     private String name;
 
-    public UserDto(String id, String password, String name) {
+    public UserDto(Long number, String id, String password, String name) {
+        this.number = number;
         this.id = id;
         this.password = password;
         this.name = name;
