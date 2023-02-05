@@ -48,7 +48,8 @@ public class UserController{
             (@RequestBody ChangeUserNameRequest changeUserNameRequest) throws Exception {
 
         //checkValidity
-        
+        changeUserNameRequest.check();
+
         UserDto userDto = userService.chageUserName(
                 changeUserNameRequest.getNumber(),
                 changeUserNameRequest.getId(),
