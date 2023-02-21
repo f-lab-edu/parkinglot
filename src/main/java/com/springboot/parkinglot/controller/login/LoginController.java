@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginController {
 
-    @GetMapping("/api/v1/login1") // admin 권한에게만
+    @GetMapping("/api/v1/login") // admin 권한에게만
     public String login() {
 
         return "Success ADMIN";

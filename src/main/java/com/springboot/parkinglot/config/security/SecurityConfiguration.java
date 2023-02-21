@@ -45,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                //.addFilter(new JwtAuthorizationFilter(authenticationManager(), this.iUserDao))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.iUserDao))
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "login").permitAll()
                 .antMatchers("/api/v1/login").hasRole("ADMIN")    // admin 만 접근 가능
