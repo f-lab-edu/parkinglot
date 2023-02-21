@@ -4,11 +4,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity //added because of "Not a managed type:"
 @Getter
 @NoArgsConstructor
-public class User {
+public class LoginUser {
 
     @Id
     private String id;
@@ -20,7 +21,7 @@ public class User {
     private String role;
 
     @Builder
-    public User(String username, String password, String email, String active, String role) {
+    public LoginUser(String username, String password, String email, String active, String role) {
         this.username = username;
         this.password = password;
         this.email = email;

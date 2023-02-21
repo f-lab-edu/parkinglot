@@ -1,6 +1,6 @@
 package com.springboot.parkinglot.repository.login;
 
-import com.springboot.parkinglot.controller.login.User;
+import com.springboot.parkinglot.controller.login.LoginUser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +24,7 @@ public class IUserDaoTest {
         String testEmail = "test@naver.com";
 
         // Role 작명규칙은 반드시 prefix로 ROLE_  을 명시해야 함!
-        iUserDao.save(User.builder()
+        iUserDao.save(LoginUser.builder()
                 .username("WonYong")
                 .email(testEmail)
                 .password(passwordEncoder.encode("test"))
@@ -32,9 +32,9 @@ public class IUserDaoTest {
                 .active("1")
                 .build());
 
-        User user = iUserDao.findByEmail(testEmail).orElseThrow(() -> new UsernameNotFoundException("not find"));
+        LoginUser loginUser = iUserDao.findByEmail(testEmail).orElseThrow(() -> new UsernameNotFoundException("not find"));
         // MANAGER 도 동일하게 생성하기
 
-        assertThat(user.getEmail()).isEqualTo(testEmail);
+        assertThat(loginUser.getEmail()).isEqualTo(testEmail);
     }
 }

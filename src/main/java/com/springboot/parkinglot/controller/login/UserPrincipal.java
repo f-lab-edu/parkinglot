@@ -10,21 +10,21 @@ import java.util.List;
 
 public class UserPrincipal implements UserDetails {
 
-    private User user;
+    private LoginUser loginUser;
 
-    public UserPrincipal(User user) {
-        this.user = user;
+    public UserPrincipal(LoginUser loginUser) {
+        this.loginUser = loginUser;
     }
 
-    public static UserPrincipal create(User user) {
-        return new UserPrincipal(user);
+    public static UserPrincipal create(LoginUser loginUser) {
+        return new UserPrincipal(loginUser);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(this.user.getRole());
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(this.loginUser.getRole());
         authorities.add(grantedAuthority);
 
         return authorities;
@@ -32,17 +32,17 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.user.getPassword();
+        return this.loginUser.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.user.getUsername();
+        return this.loginUser.getUsername();
     }
 
     //added
     public String getEmail() {
-        return this.user.getEmail();
+        return this.loginUser.getEmail();
     }
 
     @Override
@@ -62,6 +62,6 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getActive().equals("1");
+        return loginUser.getActive().equals("1");
     }
 }
