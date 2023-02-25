@@ -40,17 +40,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+//                .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.iUserDao))
+//                .authorizeRequests()
+//                .antMatchers(HttpMethod.POST, "login").permitAll()
+//                .antMatchers("/api/v1/login").hasRole("ADMIN")    // admin 만 접근 가능
+//                .antMatchers("/api/v1/login2").hasRole("MANAGER") // manager 만 접근 가능
+//                .anyRequest().authenticated(); // 이외에 모든 request는 로그인한 사용자만 접근 가능
         http
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.iUserDao))
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "login").permitAll()
-                .antMatchers("/api/v1/login").hasRole("ADMIN")    // admin 만 접근 가능
-                .antMatchers("/api/v1/login2").hasRole("MANAGER") // manager 만 접근 가능
-                .anyRequest().authenticated(); // 이외에 모든 request는 로그인한 사용자만 접근 가능
+                .antMatchers("/").permitAll()
+                .antMatchers("/api/v1/login").hasRole("ADMIN") // 각 url에 접근 가능한지
+                .antMatchers("/api/v1/login1").hasRole("MANAGER") // 확인하기 위해 설정
+                .and()
+                .httpBasic(); // 기본 로그인 창 제공
 
     }
 

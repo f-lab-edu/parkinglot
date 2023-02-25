@@ -25,10 +25,10 @@ public class IUserDaoTest {
 
         // Role 작명규칙은 반드시 prefix로 ROLE_  을 명시해야 함!
         iUserDao.save(LoginUser.builder()
-                .username("WonYong")
+                .username("test")
                 .email(testEmail)
                 .password(passwordEncoder.encode("test"))
-                .role("ROLE_ADMIN")
+                .role("ROLE_MANAGER")
                 .active("1")
                 .build());
 

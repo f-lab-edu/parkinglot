@@ -29,10 +29,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         LoginViewModel credentials = null;
         try {
+            // TODO : Bean으로.. @Autowired
             // ObjectMapper 라이브러리를 이용하여 JSON -> Object 변환 (readValue)
             // request body 데이터 확인 request.getInputStream()
             credentials = new ObjectMapper().readValue(request.getInputStream(), LoginViewModel.class);
-        } catch(IOException e) {
+        } catch(IOException e) {    // TODO : throw
             e.printStackTrace();
         }
 
@@ -44,7 +45,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         new ArrayList<>()
                 );
         // Authentication User !
-        Authentication auth = authenticationManager.authenticate(authenticationToken);
+        auth = authenticationManager.authenticate(authenticationToken);
 
         return auth;
     }

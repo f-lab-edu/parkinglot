@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+public class JwtAuthorizationFilter extends BasicAuthenticationFilter { //Basic 인증?
 
     private IUserDao iUserDao;
 
@@ -57,7 +57,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     .verify(token.replace(JwtProperties.TOKEN_PREFIX,""))
                     .getSubject();
 
-            if(email != null) {
+            if(email != null) { //TODO: Custom Error
 
                 LoginUser loginUser = iUserDao.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("not find"));
                 UserPrincipal principal = new UserPrincipal(loginUser);
