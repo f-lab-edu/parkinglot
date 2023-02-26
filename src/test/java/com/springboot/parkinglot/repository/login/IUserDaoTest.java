@@ -1,6 +1,8 @@
 package com.springboot.parkinglot.repository.login;
 
 import com.springboot.parkinglot.controller.login.LoginUser;
+import com.springboot.parkinglot.controller.user.User;
+import com.springboot.parkinglot.repository.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
