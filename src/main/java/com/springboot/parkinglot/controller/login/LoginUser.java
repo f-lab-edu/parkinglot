@@ -1,79 +1,32 @@
 package com.springboot.parkinglot.controller.login;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
-@Entity
-@Data
+@Entity //added because of "Not a managed type:"
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Table
-public class LoginUser implements LoginUserDetails{
-
+public class LoginUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
 
-    @Column(nullable = false, unique = true)
-    private String uid;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = false)
+    private String username;
     private String password;
+    private String email;  // user를 찾을 때 email을 이용하여 찾는다.
+    private String active; // 1: active, 0: inactive
+    private String role;
 
-    @Column(nullable = false)
-    private String name;
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>(); //why need rols?
-
-
-    //implements methods
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-    }   //map(x -> new SimpleGrantedAuthority(x));
-
-    @Override
-    public String getUsername() {
-        return this.uid;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Override
-    public boolean isEnabled() {
-        return true;
+    @Builder
+    public LoginUser(String username, String password, String email, String active, String role) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.active = active;
+        this.role = role;
     }
 }

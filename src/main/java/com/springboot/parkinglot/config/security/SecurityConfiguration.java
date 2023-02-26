@@ -1,51 +1,69 @@
 package com.springboot.parkinglot.config.security;
 
+
+import com.springboot.parkinglot.repository.login.IUserDao;
+import com.springboot.parkinglot.service.login.UserPrincipalDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity // Spring Security 활성화
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final UserPrincipalDetailsService userPrincipalDetailsService;
+    private final IUserDao iUserDao;
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.httpBasic().disable()
-                .csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
+    }
 
-                .and()
+    @Bean
+    DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(this.userPrincipalDetailsService);
 
-                .authorizeRequests()
-                .antMatchers("/sign-api/sign-in", "/sign-api/sign-up",
-                        "/sign-api/exception").permitAll()
-                .antMatchers(HttpMethod.GET, "/product/**").permitAll()
-
-                .antMatchers("**exception**").permitAll()
-
-                .anyRequest().hasRole("ADMIN")
-
-                .and()
-                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
-                .and()
-                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-                        UsernamePasswordAuthenticationFilter.class);
+        return  daoAuthenticationProvider;
     }
 
     @Override
-    public void configure(WebSecurity webSecurity){
-        webSecurity.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
-                "/swagger-ui.html", "/webjars/**", "/swagger/**", "/sign-api/exception");
+    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+//                .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.iUserDao))
+//                .authorizeRequests()
+//                .antMatchers(HttpMethod.POST, "login").permitAll()
+//                .antMatchers("/api/v1/login").hasRole("ADMIN")    // admin 만 접근 가능
+//                .antMatchers("/api/v1/login2").hasRole("MANAGER") // manager 만 접근 가능
+//                .anyRequest().authenticated(); // 이외에 모든 request는 로그인한 사용자만 접근 가능
+        http
+                .authorizeRequests()
+                .antMatchers("/").permitAll()
+                .antMatchers("/api/v1/login").hasRole("ADMIN") // 각 url에 접근 가능한지
+                .antMatchers("/api/v1/login1").hasRole("MANAGER") // 확인하기 위해 설정
+                .and()
+                .httpBasic(); // 기본 로그인 창 제공
+
+    }
+
+    // Custom Security Config에서 사용할 password encoder를 BCryptPasswordEncoder로 정의
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }
